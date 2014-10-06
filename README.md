@@ -24,3 +24,7 @@ All scripts are written in the Unix Bash syntax whenever possible.
 Testing is done on the MINGW32 Bash included in the "Git for Windows" package.
 
 If you use Unix and encounter errors or problems, please create a GitHub issue.
+
+## Scripts
+
+[git-delete-branches](Documentation/git-delete-branches.md) - Delete multiple branches at once

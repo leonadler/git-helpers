@@ -1,0 +1,43 @@
+#!/bin/bash
+#
+# git-delete-branches
+#
+# delete multiple branches by editing a text file
+# usage: git delete-branches
+#
+
+# determine current branch
+currentBranch=`git symbolic-ref --quiet HEAD 2>&-`;
+
+# save list of branches to file
+branchesBefore=`git show-ref --heads | sed 's#^[a-f0-9]\{40\} refs/heads/##'`
+editfile="$TMP/git-branches"
+echo '# delete lines from this file to delete branches' >"$editfile";
+echo >>"$editfile";
+echo "$branchesBefore" >>"$editfile";
+
+# open up user's editor
+echo `git config --get core.editor` "$editfile" > "$TMP/git-editor";
+"$TMP/git-editor";
+
+# get list of branches after user edits
+branchesAfter=`grep -v '^#' "$editfile" | grep -v '^ *$'`;
+
+# delete temp files
+rm -f "$editfile" 2>&-;
+rm -f "$TMP/git-editor" 2>&-;
+
+echo "$branchesBefore" | while read branch ; do
+	# if a branch name was deleted from text file, delete the branch
+	if ! grep -qF "$branch" <<< "$branchesAfter"; then
+
+		# if the current branch is being deleted, detach head
+		if [ "refs/heads/$branch" == "$currentBranch" ]; then
+			echo "Detaching HEAD at '$currentBranch'";
+			git checkout --detach --quiet HEAD;
+		fi
+
+		# branch removed from file -> delete it
+		git branch -D "$branch";
+	fi
+done
