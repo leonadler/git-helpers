@@ -1,0 +1,9 @@
+# ignore temporary files
+*.tmp
+*.~*
+Thumbs.db
+tmp/
+temp/
+
+# and our lovely node companion
+node_modules/
