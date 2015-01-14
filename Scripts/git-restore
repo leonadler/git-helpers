@@ -1,0 +1,14 @@
+#!/bin/sh
+#
+# git-restore
+#
+# restore a deleted file from git history
+# usage: git restore <file>
+#
+
+if ! test "$1"; then
+	echo 'error: no path given' >&2;
+	exit 1;
+fi
+
+git checkout $(git rev-list -n 1 HEAD -- "$1")^ -- "$1";

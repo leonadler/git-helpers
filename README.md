@@ -29,3 +29,4 @@ If you use Unix and encounter errors or problems, please create a GitHub issue.
 
 [git-delete-branches](Documentation/git-delete-branches.md) - Delete multiple branches at once
 [git-ls-deleted](Documentation/git-ls-deleted.md) - List files of a folder that were deleted in the git history
+[git-restore](Documentation/git-restore.md) - Restore a deleted file from git history
