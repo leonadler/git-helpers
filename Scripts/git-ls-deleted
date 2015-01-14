@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# git-ls-deleted
+#
+# list deleted files of a folder
+# usage: git ls-deleted [<folder>]
+#
+
+path="${1%/}";
+path="${path:-.}";
+len=0; [[ "$path" != . ]] && len=$(( ${#path}+2 ));
+
+git log --diff-filter=D --name-only --format=format: -- "$path" |
+  sort -u |
+  grep -vF "$(git ls-files -- "$path")" |
+  cut -c $len-
